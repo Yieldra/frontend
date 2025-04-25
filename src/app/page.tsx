@@ -1,7 +1,32 @@
+// app/page.tsx
+"use client";
+
+import Header from "../components/Header";
+import Hero from "../components/Hero";
+import Features from "../components/Features";
+import HowItWorks from "../components/HowItWorks";
+import YieldCalculator from "../components/YieldCalculator";
+import ContractCard from "../components/ContractCard";
+import Stats from "../components/Stats";
+import CodePreview from "../components/CodePreview";
+import FAQ from "../components/FAQ";
+import CTASection from "../components/CTASection";
+import Footer from "../components/Footer";
+
 export default function Home() {
   return (
-    <main>
-      <h1>Home Page</h1>
+    <main className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
+      {/* <Header /> */}
+      <Hero />
+      <Features />
+      <HowItWorks />
+      <YieldCalculator />
+      <Stats />
+      <ContractCard />
+      <CodePreview />
+      <FAQ />
+      <CTASection />
+      {/* <Footer /> */}
     </main>
   );
 }

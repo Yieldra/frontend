@@ -4,8 +4,8 @@ import AppShell from "@/components/AppShell";
 import Provider from "./Provider";
 
 export const metadata: Metadata = {
-  title: "Template Fullstack Web3",
-  description: "Template Fullstack Web3",
+  title: "Yieldra",
+  description: "RWA Backed Yield Stablecoin",
 };
 
 export default function RootLayout({

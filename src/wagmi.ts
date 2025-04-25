@@ -1,6 +1,6 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
-import { sepolia } from "wagmi/chains";
+import { sepolia, arbitrumSepolia } from "wagmi/chains";
 
 // const goChainTestnet = {
 //   id: 31337,
@@ -28,6 +28,6 @@ import { sepolia } from "wagmi/chains";
 export const config = getDefaultConfig({
   appName: "Template Fullstack Web3",
   projectId: process.env.NEXT_PUBLIC_REOWN_PROJECT_ID || "",
-  chains: [sepolia],
+  chains: [sepolia, arbitrumSepolia],
   ssr: true,
 });

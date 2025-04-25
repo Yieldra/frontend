@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <div className="navbar bg-white text-black shadow-md fixed top-0 z-50 px-5">
+    <div className="navbar fixed top-0 w-full bg-black bg-opacity-80 backdrop-blur-sm z-50 text-white">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -33,12 +33,21 @@ const Navbar = () => {
               <Link href="/dashboard">Dashboard</Link>
             </li>
             <li>
-              <Link href="/about">About</Link>
+              <Link href="">Documentation</Link>
             </li>
           </ul>
         </div>
         <Link href="/" className="text-2xl font-bold">
-          Template Fullstack Web3
+          <div className="flex items-center">
+            <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-teal-400 text-transparent bg-clip-text mr-2">
+              YieldUSD
+            </div>
+            <div className="hidden md:flex space-x-1 items-center">
+              <span className="bg-teal-500 px-2 py-0.5 text-xs rounded-full font-semibold">
+                HACKATHON
+              </span>
+            </div>
+          </div>
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
@@ -50,7 +59,7 @@ const Navbar = () => {
             <Link href="/dashboard">Dashboard</Link>
           </li>
           <li>
-            <Link href="/about">About</Link>
+            <Link href="">Documentation</Link>
           </li>
         </ul>
       </div>
