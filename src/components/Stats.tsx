@@ -82,7 +82,7 @@ const Stats = () => {
             </h3>
             <p className="text-gray-400">
               For demonstration purposes, our hackathon implementation features
-              an amplified yield rate that showcases the protocol's
+              an amplified yield rate that showcases the protocol&apos;s
               functionality in a compressed timeframe.
             </p>
           </div>

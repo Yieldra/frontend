@@ -1,7 +1,7 @@
 "use client";
 
 import Footer from "./Footer";
-import Header from "./Header";
+// import Header from "./Header";
 import Navbar from "./Navbar";
 
 const AppShell = ({ children }: { children: React.ReactNode }) => {
