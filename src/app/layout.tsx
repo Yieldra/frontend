@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import AppShell from "@/components/AppShell";
 import Provider from "./Provider";
+import { ToastContainer } from 'react-toastify';
 
 export const metadata: Metadata = {
   title: "Yieldra",
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body className={` bg-white text-black`}>
         <Provider>
           <AppShell>{children}</AppShell>
+          <ToastContainer />
         </Provider>
       </body>
     </html>

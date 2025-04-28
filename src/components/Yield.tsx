@@ -1,4 +1,175 @@
+import { wagmiContractITestUSDCConfig, wagmiContractTestUSDCConfig, wagmiContractYieldUSDCConfig } from '@/services/contract';
+import { useEffect, useState } from 'react';
+import { formatUnits } from 'viem';
+import { useAccount, useReadContract, useWriteContract } from 'wagmi';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Yield = () => {
+  const { address } = useAccount();
+  const [usdc, setUsdc] = useState(0);
+  const [yusdc, setYusdc] = useState(0);
+  const [deposit, setDeposit] = useState(0);
+  const [yieldAmount, setYieldAmount] = useState(0);
+  const [apy, setApy] = useState(0);
+  const [yieldAmplifier, setYieldAmplifier] = useState(0);
+  const [depositUSDC, setDepositUSDC] = useState(0);
+  const [newApy, setNewApy] = useState(0);
+  const [newYieldAmplifier, setNewYieldAmplifier] = useState(0);
+  const [fundYield, setFundYield] = useState(0);
+
+  const { writeContractAsync } = useWriteContract();
+  const [loadingButton, setLoadingButton] = useState<string | null>(null);
+
+  const { data: balanceUSDC } = useReadContract({
+    ...wagmiContractTestUSDCConfig,
+    functionName: 'balanceOf',
+    args: address ? [address] : undefined,
+    query: { refetchInterval: 10000 },
+  });
+
+  useEffect(() => {
+    if (typeof balanceUSDC === 'bigint') {
+      setUsdc(parseFloat(formatUnits(balanceUSDC, 6)));
+    }
+  }, [balanceUSDC]);
+
+  const { data: balanceYUSDC } = useReadContract({
+    ...wagmiContractYieldUSDCConfig,
+    functionName: 'balanceOf',
+    args: address ? [address] : undefined,
+    query: { refetchInterval: 10000 },
+  });
+
+  useEffect(() => {
+    if (typeof balanceYUSDC === 'bigint') {
+      setYusdc(parseFloat(formatUnits(balanceYUSDC, 6)));
+    }
+  }, [balanceYUSDC]);
+
+  const { data: balanceDeposit } = useReadContract({
+    ...wagmiContractYieldUSDCConfig,
+    functionName: 'deposits',
+    args: address ? [address] : undefined,
+    query: { refetchInterval: 10000 },
+  });
+
+  useEffect(() => {
+    if (balanceDeposit && Array.isArray(balanceDeposit) && typeof balanceDeposit[0] === 'bigint') {
+      setDeposit(parseFloat(formatUnits(balanceDeposit[0], 6)));
+    }
+  }, [balanceDeposit]);
+
+  const { data: balanceYield } = useReadContract({
+    ...wagmiContractYieldUSDCConfig,
+    functionName: 'earned',
+    args: address ? [address] : undefined,
+    query: { refetchInterval: 10000 },
+  });
+
+  useEffect(() => {
+    if (typeof balanceYield === 'bigint') {
+      setYieldAmount(parseFloat(formatUnits(balanceYield, 6)));
+    }
+  }, [balanceYield]);
+
+  const { data: currentApy } = useReadContract({
+    ...wagmiContractYieldUSDCConfig,
+    functionName: 'apy',
+    query: { refetchInterval: 10000 },
+  });
+
+  useEffect(() => {
+    if (typeof currentApy === 'bigint') {
+      setApy(parseFloat(formatUnits(currentApy, 6)));
+    }
+  }, [currentApy]);
+
+  const { data: yieldAmp } = useReadContract({
+    ...wagmiContractYieldUSDCConfig,
+    functionName: 'yieldAmplifier',
+    query: { refetchInterval: 10000 },
+  });
+
+  useEffect(() => {
+    if (typeof yieldAmp === 'bigint') {
+      setYieldAmplifier(parseFloat(formatUnits(yieldAmp, 6)));
+    }
+  }, [yieldAmp]);
+
+  // ---- FUNCTION WRAPPERS ----
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const executeContract = async (key: string, config: any) => {
+    try {
+      setLoadingButton(key);
+      await writeContractAsync(config);
+      toast.success(`${key} success!`);
+    } catch (error: unknown) {
+      console.error(error);
+
+      let errorMessage = 'Unknown Error';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === 'object' && error && 'shortMessage' in error) {
+        errorMessage = (error as { shortMessage: string }).shortMessage;
+      }
+
+      toast.error(`${key} failed: ${errorMessage}`);
+    } finally {
+      setLoadingButton(null);
+    }
+  };
+
+
+  const handleApprove = () => {
+    if (!depositUSDC) return toast.warn('Set amount first!');
+    executeContract('Approve', {
+      ...wagmiContractYieldUSDCConfig,
+      functionName: 'approve',
+      args: [address, BigInt(depositUSDC)],
+    });
+  };
+
+  const handleDeposit = () => {
+    if (!depositUSDC) return toast.warn('Set amount first!');
+    executeContract('Deposit', {
+      ...wagmiContractYieldUSDCConfig,
+      functionName: 'deposit',
+      args: [BigInt(depositUSDC)],
+    });
+  };
+
+  const handleWithdraw = () => {
+    executeContract('Withdraw', {
+      ...wagmiContractYieldUSDCConfig,
+      functionName: 'withdraw',
+    });
+  };
+
+  const handleClaim = () => {
+    executeContract('Claim Faucet', {
+      ...wagmiContractITestUSDCConfig,
+      functionName: 'claimFaucet',
+    });
+  };
+
+  const handleSetParameters = () => {
+    executeContract('Set Parameters', {
+      ...wagmiContractYieldUSDCConfig,
+      functionName: 'setYieldParameters',
+      args: [BigInt(newApy), BigInt(newYieldAmplifier)],
+    });
+  };
+
+  const handleFundYieldReserves = () => {
+    if (!fundYield) return toast.warn('Set amount first!');
+    executeContract('Fund Reserves', {
+      ...wagmiContractYieldUSDCConfig,
+      functionName: 'fundYieldReserves',
+      args: [BigInt(fundYield)],
+    });
+  };
+
   return (
     <main className="max-w-4xl mx-auto p-6 bg-slate-50 rounded-lg shadow-lg">
       {/* Account Information */}
@@ -7,19 +178,19 @@ const Yield = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-3 bg-blue-50 rounded">
             <p className="text-sm text-gray-600">USDC Balance</p>
-            <p className="text-xl font-medium">{10000} USDC</p>
+            <p className="text-xl font-medium">{usdc} USDC</p>
           </div>
           <div className="p-3 bg-green-50 rounded">
             <p className="text-sm text-gray-600">YieldUSD Balance</p>
-            <p className="text-xl font-medium">{100} yUSD</p>
+            <p className="text-xl font-medium">{yusdc} yUSD</p>
           </div>
           <div className="p-3 bg-purple-50 rounded">
             <p className="text-sm text-gray-600">Current Deposit</p>
-            <p className="text-xl font-medium">{5} USDC</p>
+            <p className="text-xl font-medium">{deposit} USDC</p>
           </div>
           <div className="p-3 bg-yellow-50 rounded">
             <p className="text-sm text-gray-600">Earned Yield</p>
-            <p className="text-xl font-medium">{123} yUSD</p>
+            <p className="text-xl font-medium">{yieldAmount} yUSD</p>
           </div>
         </div>
       </div>
@@ -30,11 +201,11 @@ const Yield = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-3 bg-indigo-50 rounded">
             <p className="text-sm text-gray-600">Current APY</p>
-            <p className="text-xl font-medium">{15}%</p>
+            <p className="text-xl font-medium">{apy}%</p>
           </div>
           <div className="p-3 bg-pink-50 rounded">
             <p className="text-sm text-gray-600">Yield Amplifier</p>
-            <p className="text-xl font-medium">{100}x</p>
+            <p className="text-xl font-medium">{yieldAmplifier}x</p>
           </div>
         </div>
       </div>
@@ -50,24 +221,24 @@ const Yield = () => {
             <input
               type="number"
               placeholder="Amount of USDC"
-              value={0}
-              onChange={(e) => {}}
+              value={depositUSDC}
+              onChange={(e) => setDepositUSDC(Number(e.target.value))}
               className="flex-grow p-2 border border-gray-300 rounded"
               disabled={false}
             />
             <button
-              onClick={() => {}}
-              className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition"
-              disabled={false}
+              onClick={handleApprove}
+              className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition disabled:opacity-50"
+              disabled={loadingButton !== null}
             >
-              Approve
+              {loadingButton === 'Approve' ? 'Approving...' : 'Approve'}
             </button>
             <button
-              onClick={() => {}}
-              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
-              disabled={false}
+              onClick={handleDeposit}
+              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition disabled:opacity-50"
+              disabled={loadingButton !== null}
             >
-              Deposit
+              {loadingButton === 'Deposit' ? 'Depositing...' : 'Deposit'}
             </button>
           </div>
         </div>
@@ -76,11 +247,11 @@ const Yield = () => {
         <div className="mb-6">
           <h3 className="font-medium mb-2">Withdraw USDC</h3>
           <button
-            onClick={() => {}}
-            className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
-            disabled={false}
+            onClick={handleWithdraw}
+            className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition disabled:opacity-50"
+            disabled={loadingButton !== null}
           >
-            Withdraw All
+            {loadingButton === 'Withdraw' ? 'Withdrawing...' : 'Withdraw All'}
           </button>
         </div>
 
@@ -88,7 +259,7 @@ const Yield = () => {
         <div>
           <h3 className="font-medium mb-2">Claim Test USDC</h3>
           <button
-            onClick={() => {}}
+            onClick={handleClaim}
             className="bg-purple-500 text-white px-6 py-2 rounded hover:bg-purple-600 transition"
             disabled={false}
           >
@@ -104,27 +275,33 @@ const Yield = () => {
         {/* Set Yield Parameters */}
         <div className="mb-6">
           <h3 className="font-medium mb-2">Set Yield Parameters</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-            <input
-              type="number"
-              placeholder="New APY (%)"
-              value={10}
-              onChange={(e) => {}}
-              className="p-2 border border-gray-300 rounded"
-              disabled={false}
-            />
-            <input
-              type="number"
-              placeholder="New Amplifier"
-              value={0}
-              onChange={(e) => {}}
-              className="p-2 border border-gray-300 rounded"
-              disabled={false}
-            />
+          <div className="flex w-full gap-2 flex-col md:flex-row">
+            <div>
+              <p>APY</p>
+              <input
+                type="number"
+                placeholder="New APY (%)"
+                value={newApy}
+                onChange={(e) => setNewApy(Number(e.target.value))}
+                className="p-2 border border-gray-300 rounded"
+                disabled={false}
+              />
+            </div>
+            <div>
+              <p>Yield Amplifier</p>
+              <input
+                type="number"
+                placeholder="New Amplifier"
+                value={newYieldAmplifier}
+                onChange={(e) => setNewYieldAmplifier(Number(e.target.value))}
+                className="p-2 border border-gray-300 rounded"
+                disabled={false}
+              />
+            </div>
           </div>
           <button
-            onClick={() => {}}
-            className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition"
+            onClick={handleSetParameters}
+            className="bg-red-500 text-white px-6 py-2 mt-4 rounded hover:bg-red-600 transition"
             disabled={false}
           >
             Set Parameters
@@ -138,17 +315,17 @@ const Yield = () => {
             <input
               type="number"
               placeholder="Amount of USDC"
-              value={0}
-              onChange={(e) => {}}
+              value={fundYield}
+              onChange={(e) => setFundYield(Number(e.target.value))}
               className="flex-grow p-2 border border-gray-300 rounded"
               disabled={false}
             />
             <button
-              onClick={() => {}}
-              className="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 transition"
-              disabled={false}
+              onClick={handleFundYieldReserves}
+              className="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 transition disabled:opacity-50"
+              disabled={loadingButton !== null}
             >
-              Fund Reserves
+              {loadingButton === 'Fund Reserves' ? 'Funding...' : 'Fund Reserves'}
             </button>
           </div>
         </div>

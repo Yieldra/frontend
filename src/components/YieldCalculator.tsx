@@ -11,6 +11,16 @@ const YieldCalculator = () => {
   const [estimatedYield, setEstimatedYield] = useState<number>(0);
   const [totalValue, setTotalValue] = useState<number>(0);
 
+  const [amountFormatted, setAmountFormatted] = useState<string>("");
+  const [estimatedYieldFormatted, setEstimatedYieldFormatted] = useState<string>("");
+  const [totalValueFormatted, setTotalValueFormatted] = useState<string>("");
+
+  useEffect(() => {
+    setAmountFormatted(amount.toLocaleString());
+    setEstimatedYieldFormatted(estimatedYield.toLocaleString());
+    setTotalValueFormatted(totalValue.toLocaleString());
+  }, [amount, estimatedYield, totalValue]);
+
   useEffect(() => {
     const calculateYield = () => {
       // Simple APY calculation (doesn't account for compounding in this demo)
@@ -85,21 +95,21 @@ const YieldCalculator = () => {
                 <div className="mb-6">
                   <div className="text-gray-400 mb-1">Initial Deposit</div>
                   <div className="text-2xl font-semibold">
-                    ${amount.toLocaleString()}
+                    ${amountFormatted}
                   </div>
                 </div>
 
                 <div className="mb-6">
                   <div className="text-gray-400 mb-1">Estimated Yield</div>
                   <div className="text-2xl font-semibold text-green-400">
-                    +${estimatedYield.toLocaleString()}
+                    +${estimatedYieldFormatted}
                   </div>
                 </div>
 
                 <div className="pt-4 border-t border-gray-700">
                   <div className="text-gray-400 mb-1">Total Value</div>
                   <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-teal-400 text-transparent bg-clip-text">
-                    ${totalValue.toLocaleString()}
+                    ${totalValueFormatted}
                   </div>
                 </div>
               </div>
