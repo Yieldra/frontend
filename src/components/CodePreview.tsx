@@ -108,13 +108,10 @@ contract YieldUSD is ERC20, Ownable {
   };
 
   return (
-    <section className="py-16 bg-black">
+    <section className="py-20 bg-black">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
-            <div className="inline-flex items-center justify-center bg-blue-500 bg-opacity-20 rounded-full p-3 mb-6">
-              <Code className="h-6 w-6 text-blue-400" />
-            </div>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Smart Contract Code
             </h2>

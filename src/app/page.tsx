@@ -6,9 +6,7 @@ import Hero from "../components/Hero";
 import Features from "../components/Features";
 import HowItWorks from "../components/HowItWorks";
 import YieldCalculator from "../components/YieldCalculator";
-import ContractCard from "../components/ContractCard";
 import Stats from "../components/Stats";
-import CodePreview from "../components/CodePreview";
 import FAQ from "../components/FAQ";
 import CTASection from "../components/CTASection";
 // import Footer from "../components/Footer";
@@ -21,9 +19,7 @@ export default function Home() {
       <Features />
       <HowItWorks />
       <YieldCalculator />
-      <Stats />
-      <ContractCard />
-      <CodePreview />
+      {/* <Stats /> */}
       <FAQ />
       <CTASection />
       {/* <Footer /> */}

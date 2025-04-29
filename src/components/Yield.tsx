@@ -4,8 +4,18 @@ import { formatUnits } from 'viem';
 import { useAccount, useReadContract, useWriteContract } from 'wagmi';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {
+  Wallet,
+  BadgeDollarSign,
+  CreditCard,
+  LineChart,
+  ArrowDownUp,
+  Lock,
+  Loader2
+} from "lucide-react";
 
 const Yield = () => {
+  const [tab, setTab] = useState<"deposit" | "withdraw" | "claim">("deposit");
   const { address } = useAccount();
   const [usdc, setUsdc] = useState(0);
   const [yusdc, setYusdc] = useState(0);
@@ -193,168 +203,298 @@ const Yield = () => {
   };
 
   return (
-    <main className="max-w-4xl mx-auto p-6 bg-slate-50 rounded-lg shadow-lg">
-      {/* Account Information */}
-      <div className="mb-8 p-4 bg-white rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">Account Overview</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-3 bg-blue-50 rounded">
-            <p className="text-sm text-gray-600">USDC Balance</p>
-            <p className="text-xl font-medium">{usdc} USDC</p>
-          </div>
-          <div className="p-3 bg-green-50 rounded">
-            <p className="text-sm text-gray-600">YieldUSD Balance</p>
-            <p className="text-xl font-medium">{yusdc} yUSD</p>
-          </div>
-          <div className="p-3 bg-purple-50 rounded">
-            <p className="text-sm text-gray-600">Current Deposit</p>
-            <p className="text-xl font-medium">{deposit} USDC</p>
-          </div>
-          <div className="p-3 bg-yellow-50 rounded">
-            <p className="text-sm text-gray-600">Earned Yield</p>
-            <p className="text-xl font-medium">{yieldAmount} yUSD</p>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gray-950 text-gray-200">
+      <div className="max-w-6xl mx-auto p-6">
+        <header className="mb-8">
+          <h1 className="text-3xl font-bold text-white mb-2">Yieldra Protocol</h1>
+          <p className="text-gray-400">Maximize your yield with our advanced staking platform</p>
+        </header>
 
-      {/* Contract Information */}
-      <div className="mb-8 p-4 bg-white rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">Protocol Information</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-3 bg-indigo-50 rounded">
-            <p className="text-sm text-gray-600">Current APY</p>
-            <p className="text-xl font-medium">{apy}%</p>
-          </div>
-          <div className="p-3 bg-pink-50 rounded">
-            <p className="text-sm text-gray-600">Yield Amplifier</p>
-            <p className="text-xl font-medium">{yieldAmplifier}x</p>
-          </div>
-        </div>
-      </div>
-
-      {/* User Actions */}
-      <div className="mb-8 p-4 bg-white rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">Basic Operations</h2>
-
-        {/* Deposit */}
-        <div className="mb-6">
-          <h3 className="font-medium mb-2">Deposit USDC</h3>
-          <div className="flex flex-col md:flex-row gap-3">
-            <input
-              type="number"
-              placeholder="Amount of USDC"
-              value={depositUSDC}
-              onChange={(e) => setDepositUSDC(Number(e.target.value))}
-              className="flex-grow p-2 border border-gray-300 rounded"
-              disabled={false}
-            />
-            <button
-              onClick={handleApprove}
-              className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition disabled:opacity-50"
-              disabled={loadingButton !== null}
-            >
-              {loadingButton === 'Approve' ? 'Approving...' : 'Approve'}
-            </button>
-            <button
-              onClick={handleDeposit}
-              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition disabled:opacity-50"
-              disabled={loadingButton !== null}
-            >
-              {loadingButton === 'Deposit' ? 'Depositing...' : 'Deposit'}
-            </button>
-          </div>
-        </div>
-
-        {/* Withdraw */}
-        <div className="mb-6">
-          <h3 className="font-medium mb-2">Withdraw USDC</h3>
-          <button
-            onClick={handleWithdraw}
-            className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition disabled:opacity-50"
-            disabled={loadingButton !== null}
-          >
-            {loadingButton === 'Withdraw' ? 'Withdrawing...' : 'Withdraw All'}
-          </button>
-        </div>
-
-        {/* Claim USDC Faucet */}
-        <div>
-          <h3 className="font-medium mb-2">Claim Test USDC</h3>
-          <button
-            onClick={handleClaim}
-            className="bg-purple-500 text-white px-6 py-2 rounded hover:bg-purple-600 transition"
-            disabled={false}
-          >
-            Claim USDC Faucet
-          </button>
-        </div>
-      </div>
-
-      {/* Admin Functions */}
-      {isOwner && (
-        <div className="mb-8 p-4 bg-white rounded-lg shadow border-t-4 border-red-500">
-          <h2 className="text-xl font-semibold mb-4">Admin Functions</h2>
-
-          {/* Set Yield Parameters */}
-          <div className="mb-6">
-            <h3 className="font-medium mb-2">Set Yield Parameters</h3>
-            <div className="flex w-full gap-2 flex-col md:flex-row">
-              <div>
-                <p>APY</p>
-                <input
-                  type="number"
-                  placeholder="New APY (%)"
-                  value={newApy}
-                  onChange={(e) => setNewApy(Number(e.target.value))}
-                  className="p-2 border border-gray-300 rounded"
-                  disabled={false}
-                />
-              </div>
-              <div>
-                <p>Yield Amplifier</p>
-                <input
-                  type="number"
-                  placeholder="New Amplifier"
-                  value={newYieldAmplifier}
-                  onChange={(e) => setNewYieldAmplifier(Number(e.target.value))}
-                  className="p-2 border border-gray-300 rounded"
-                  disabled={false}
-                />
+        <div className='flex flex-col gap-6'>
+          <div className='grid grid-cols-3 gap-6'>
+            <div className='lg:col-span-2 space-y-6'>
+              <div className="bg-gray-900 border border-gray-800 rounded-lg">
+                <div className="p-4 border-b border-gray-800">
+                  <h2 className="flex items-center text-white text-lg font-semibold">
+                    <Wallet className="mr-2 h-5 w-5 text-emerald-500" /> Account Overview
+                  </h2>
+                  <p className="text-sm text-gray-400">Your current balances and earnings</p>
+                </div>
+                <div className="p-4 grid grid-cols-2 gap-4">
+                  {[
+                    {
+                      label: "USDC Balance",
+                      value: usdc,
+                      icon: <BadgeDollarSign className="h-5 w-5 text-blue-400 mr-1" />,
+                      suffix: "USDC",
+                      color: "text-blue-400"
+                    },
+                    {
+                      label: "YieldUSD Balance",
+                      value: yusdc,
+                      icon: <BadgeDollarSign className="h-5 w-5 text-emerald-400 mr-1" />,
+                      suffix: "yUSD",
+                      color: "text-emerald-400"
+                    },
+                    {
+                      label: "Current Deposit",
+                      value: deposit,
+                      icon: <CreditCard className="h-5 w-5 text-purple-400 mr-1" />,
+                      suffix: "USDC",
+                      color: "text-purple-400"
+                    },
+                    {
+                      label: "Earned Yield",
+                      value: yieldAmount,
+                      icon: <LineChart className="h-5 w-5 text-yellow-400 mr-1" />,
+                      suffix: "yUSD",
+                      color: "text-yellow-400"
+                    }
+                  ].map((item, index) => (
+                    <div key={index} className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                      <p className="text-sm text-gray-400 mb-1">{item.label}</p>
+                      <p className={`text-2xl font-medium text-white flex items-center`}>
+                        {item.icon}
+                        {item.value.toLocaleString()}{" "}
+                        <span className={`text-sm ${item.color} ml-1`}>{item.suffix}</span>
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-            <button
-              onClick={handleSetParameters}
-              className="bg-red-500 text-white px-6 py-2 mt-4 rounded hover:bg-red-600 transition"
-              disabled={false}
-            >
-              Set Parameters
-            </button>
-          </div>
 
-          {/* Fund Yield Reserves */}
-          <div>
-            <h3 className="font-medium mb-2">Fund Yield Reserves</h3>
-            <div className="flex flex-col md:flex-row gap-3">
-              <input
-                type="number"
-                placeholder="Amount of USDC"
-                value={fundYield}
-                onChange={(e) => setFundYield(Number(e.target.value))}
-                className="flex-grow p-2 border border-gray-300 rounded"
-                disabled={false}
-              />
-              <button
-                onClick={handleFundYieldReserves}
-                className="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 transition disabled:opacity-50"
-                disabled={loadingButton !== null}
-              >
-                {loadingButton === 'Fund Reserves' ? 'Funding...' : 'Fund Reserves'}
-              </button>
+            <div className="bg-gray-900 border border-gray-800 rounded-lg">
+              <div className="p-4 border-b border-gray-800">
+                <h2 className="flex items-center text-white text-lg font-semibold">
+                  <LineChart className="mr-2 h-5 w-5 text-emerald-500" /> Protocol Information
+                </h2>
+                <p className="text-sm text-gray-400">Current yield parameters</p>
+              </div>
+              <div className="p-4 space-y-4">
+                <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                  <p className="text-sm text-gray-400 mb-1">Current APY</p>
+                  <p className="text-2xl font-medium text-white">{apy}%</p>
+                </div>
+                <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                  <p className="text-sm text-gray-400 mb-1">Yield Amplifier</p>
+                  <p className="text-2xl font-medium text-white">{yieldAmplifier}x</p>
+                </div>
+              </div>
             </div>
           </div>
+
+          <div className='grid grid-cols-3 gap-6'>
+            <div className={`${(isOwner ? 'col-span-2' : 'col-span-3')} gap-6`}>
+              <div className="bg-gray-900 border border-gray-800 rounded-lg">
+                <div className="p-4 border-b border-gray-800">
+                  <h2 className="flex items-center text-white text-lg font-semibold">
+                    <ArrowDownUp className="mr-2 h-5 w-5 text-emerald-500" /> Operations
+                  </h2>
+                  <p className="text-sm text-gray-400">Deposit, withdraw, and claim tokens</p>
+                </div>
+                <div className="p-4">
+                  <div className="flex justify-between bg-gray-800 p-1 rounded mb-4">
+                    {["deposit", "withdraw", "claim"].map((t) => (
+                      <button
+                        key={t}
+                        onClick={() => setTab(t as any)}
+                        className={`flex-1 py-2 text-sm font-medium rounded ${
+                          tab === t ? "bg-gray-900 text-white" : "text-gray-400"
+                        }`}
+                      >
+                        {t.charAt(0).toUpperCase() + t.slice(1)}
+                      </button>
+                    ))}
+                  </div>
+
+                  {tab === "deposit" && (
+                    <div className="space-y-4">
+                      <div className="flex flex-col space-y-2">
+                        <label className="text-sm text-gray-400">Amount to Deposit</label>
+                        <div className="flex space-x-2">
+                          <input
+                            type="number"
+                            placeholder="Amount of USDC"
+                            value={depositUSDC ?? ""}
+                            onChange={(e) => setDepositUSDC(Number(e.target.value))}
+                            className="bg-gray-800 border border-gray-700 text-white p-2 rounded w-full"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={handleApprove}
+                          disabled={loadingButton !== null || !depositUSDC}
+                          className="flex-1 bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded"
+                        >
+                          {loadingButton === "Approve" ? (
+                            <span className="flex items-center">
+                              <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                              Approving...
+                            </span>
+                          ) : (
+                            "Approve"
+                          )}
+                        </button>
+                        <button
+                          onClick={handleDeposit}
+                          disabled={loadingButton !== null || !depositUSDC}
+                          className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded"
+                        >
+                          {loadingButton === "Deposit" ? (
+                            <span className="flex items-center">
+                              <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                              Depositing...
+                            </span>
+                          ) : (
+                            "Deposit"
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {tab === "withdraw" && (
+                    <div className="space-y-4">
+                      <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
+                        <p className="text-sm text-gray-400 mb-1">Available to Withdraw</p>
+                        <p className="text-xl font-medium text-white">{deposit.toLocaleString()} USDC</p>
+                      </div>
+                      <button
+                        onClick={handleWithdraw}
+                        disabled={loadingButton !== null || deposit <= 0}
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                      >
+                        {loadingButton === "Withdraw" ? (
+                          <span className="flex items-center">
+                            <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                            Withdrawing...
+                          </span>
+                        ) : (
+                          "Withdraw All"
+                        )}
+                      </button>
+                    </div>
+                  )}
+
+                  {tab === "claim" && (
+                    <div className="space-y-4">
+                      <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
+                        <p className="text-sm text-gray-400 mb-1">Claim Test USDC</p>
+                        <p className="text-sm text-gray-400">Get 100 USDC for testing the protocol</p>
+                      </div>
+                      <button
+                        onClick={handleClaim}
+                        disabled={loadingButton !== null}
+                        className="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded"
+                      >
+                        {loadingButton === "Claim" ? (
+                          <span className="flex items-center">
+                            <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                            Claiming...
+                          </span>
+                        ) : (
+                          "Claim USDC Faucet"
+                        )}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {isOwner && (
+              <div className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden relative">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-orange-500"></div>
+                <div className="p-4 border-b border-gray-800">
+                  <h2 className="flex items-center text-white text-lg font-semibold">
+                    <Lock className="mr-2 h-5 w-5 text-red-500" /> Admin Functions
+                  </h2>
+                  <p className="text-sm text-gray-400">Protocol management operations</p>
+                </div>
+                <div className="p-4 space-y-6">
+                  <div className="space-y-4">
+                    <h3 className="text-sm font-medium text-gray-300">Set Yield Parameters</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm text-gray-400">APY (%)</label>
+                        <input
+                          type="number"
+                          placeholder="New APY"
+                          value={newApy ?? ""}
+                          onChange={(e) => setNewApy(Number(e.target.value))}
+                          className="w-full bg-gray-800 border border-gray-700 text-white p-2 rounded"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm text-gray-400">Yield Amplifier</label>
+                        <input
+                          type="number"
+                          placeholder="New Amplifier"
+                          value={newYieldAmplifier ?? ""}
+                          onChange={(e) => setNewYieldAmplifier(Number(e.target.value))}
+                          className="w-full bg-gray-800 border border-gray-700 text-white p-2 rounded"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      onClick={handleSetParameters}
+                      disabled={loadingButton !== null}
+                      className="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+                    >
+                      {loadingButton === "Set Parameters" ? (
+                        <span className="flex items-center">
+                          <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                          Setting Parameters...
+                        </span>
+                      ) : (
+                        "Set Parameters"
+                      )}
+                    </button>
+                  </div>
+
+                  <hr className="border-gray-800" />
+
+                  <div className="space-y-4">
+                    <h3 className="text-sm font-medium text-gray-300">Fund Yield Reserves</h3>
+                    <div className="flex space-x-2">
+                      <input
+                        type="number"
+                        placeholder="Amount of USDC"
+                        value={fundYield ?? ""}
+                        onChange={(e) => setFundYield(Number(e.target.value))}
+                        className="bg-gray-800 border border-gray-700 text-white p-2 rounded w-full"
+                      />
+                      <button
+                        onClick={() => setFundYield(usdc)}
+                        className="px-4 py-2 text-sm border border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white rounded"
+                      >
+                        Max
+                      </button>
+                    </div>
+                    <button
+                      onClick={handleFundYieldReserves}
+                      disabled={loadingButton !== null || !fundYield}
+                      className="w-full bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded"
+                    >
+                      {loadingButton === "Fund Reserves" ? (
+                        <span className="flex items-center">
+                          <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                          Funding...
+                        </span>
+                      ) : (
+                        "Fund Reserves"
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      )}
-    </main>
+      </div>
+    </div>
   );
 };
 
