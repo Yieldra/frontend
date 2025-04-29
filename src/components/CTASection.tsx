@@ -23,7 +23,7 @@ const CTASection = () => {
               Ready to Start Earning?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Launch the YieldUSD app to deposit your stablecoins and start
+              Launch the Yieldra app to deposit your stablecoins and start
               earning 5% APY right away
             </p>
 

@@ -39,9 +39,9 @@ const FAQItem = ({
 const FAQ = () => {
   const faqs = [
     {
-      question: "What is YieldUSD?",
+      question: "What is Yieldra?",
       answer:
-        "YieldUSD is a DeFi protocol that allows users to deposit USDC stablecoins and receive yUSD tokens that automatically accrue yield at a 5% APY rate.",
+        "Yieldra is a DeFi protocol that allows users to deposit USDC stablecoins and receive yUSD tokens that automatically accrue yield at a 5% APY rate.",
     },
     {
       question: "How does the yield generation work?",
@@ -51,7 +51,7 @@ const FAQ = () => {
     {
       question: "Is there a lockup period?",
       answer:
-        "No, YieldUSD has no lockup period. You can withdraw your original deposit plus accrued yield at any time.",
+        "No, Yieldra has no lockup period. You can withdraw your original deposit plus accrued yield at any time.",
     },
     {
       question: "What is the test USDC faucet?",
@@ -64,9 +64,9 @@ const FAQ = () => {
         "The yield amplifier is a hackathon demo feature that accelerates the yield calculation to demonstrate the protocol's functionality in a compressed timeframe.",
     },
     {
-      question: "Is YieldUSD audited?",
+      question: "Is Yieldra audited?",
       answer:
-        "As a hackathon project, YieldUSD is built as a proof of concept and has not undergone a formal audit. It's built with OpenZeppelin standards and follows best security practices.",
+        "As a hackathon project, Yieldra is built as a proof of concept and has not undergone a formal audit. It's built with OpenZeppelin standards and follows best security practices.",
     },
   ];
 
@@ -78,7 +78,7 @@ const FAQ = () => {
             Frequently Asked Questions
           </h2>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Everything you need to know about YieldUSD
+            Everything you need to know about Yieldra
           </p>
         </div>
 

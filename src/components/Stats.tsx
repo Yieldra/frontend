@@ -37,7 +37,7 @@ const Stats = () => {
             Protocol Statistics
           </h2>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Real-time metrics from the YieldUSD protocol
+            Real-time metrics from the Yieldra protocol
           </p>
         </div>
 

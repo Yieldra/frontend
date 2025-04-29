@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { wagmiContractITestUSDCConfig, wagmiContractTestUSDCConfig, wagmiContractYieldUSDCConfig } from '@/services/contract';
 import { useEffect, useState } from 'react';
 import { formatUnits } from 'viem';
@@ -103,7 +104,7 @@ const Yield = () => {
 
   useEffect(() => {
     if (typeof currentApy === 'bigint') {
-      setApy(parseFloat(formatUnits(currentApy, 6)));
+      setApy(Number(currentApy) / 100);
     }
   }, [currentApy]);
 
@@ -115,7 +116,7 @@ const Yield = () => {
 
   useEffect(() => {
     if (typeof yieldAmp === 'bigint') {
-      setYieldAmplifier(parseFloat(formatUnits(yieldAmp, 6)));
+      setYieldAmplifier(Number(yieldAmp));
     }
   }, [yieldAmp]);
 
@@ -230,7 +231,7 @@ const Yield = () => {
                       color: "text-blue-400"
                     },
                     {
-                      label: "YieldUSD Balance",
+                      label: "Yieldra Balance",
                       value: yusdc,
                       icon: <BadgeDollarSign className="h-5 w-5 text-emerald-400 mr-1" />,
                       suffix: "yUSD",

@@ -51,7 +51,7 @@ const YieldCalculator = () => {
               Yield Calculator
             </h2>
             <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-              Calculate your potential returns with YieldUSD
+              Calculate your potential returns with Yieldra
             </p>
           </div>
 

@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { Code, Copy, Check } from "lucide-react";
+import { Copy, Check } from "lucide-react";
 
 const CodePreview = () => {
   const [isCopied, setIsCopied] = useState(false);
@@ -18,7 +18,7 @@ interface ITestUSDC {
     function claimFaucet() external;
 }
 
-contract YieldUSD is ERC20, Ownable {
+contract Yieldra is ERC20, Ownable {
     IERC20 public stableToken; // e.g., DAI or USDC
     uint256 public apy = 500; // 5% APY (in basis points)
     uint256 constant SECONDS_IN_YEAR = 31536000;
@@ -33,7 +33,7 @@ contract YieldUSD is ERC20, Ownable {
 
     mapping(address => Deposit) public deposits;
 
-    constructor(address _stableToken) ERC20("YieldUSD", "yUSD") Ownable(msg.sender) {
+    constructor(address _stableToken) ERC20("Yieldra", "yUSD") Ownable(msg.sender) {
         stableToken = IERC20(_stableToken);
     }
 
@@ -116,13 +116,13 @@ contract YieldUSD is ERC20, Ownable {
               Smart Contract Code
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              YieldUSD is an open-source protocol built on Solidity
+              Yieldra is an open-source protocol built on Solidity
             </p>
           </div>
 
           <div className="bg-gray-900 rounded-xl border border-gray-700 overflow-hidden">
             <div className="flex justify-between items-center px-4 py-2 bg-gray-800 border-b border-gray-700">
-              <div className="text-gray-300 font-mono">YieldUSD.sol</div>
+              <div className="text-gray-300 font-mono">Yieldra.sol</div>
               <button
                 onClick={copyToClipboard}
                 className="text-gray-400 hover:text-white flex items-center"

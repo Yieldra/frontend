@@ -25,7 +25,7 @@ const ContractCard = () => {
           <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
             <div className="mb-4">
               <div className="text-gray-400 mb-1 text-sm">Contract Name</div>
-              <div className="text-xl">YieldUSD</div>
+              <div className="text-xl">Yieldra</div>
             </div>
 
             <div className="mb-4">

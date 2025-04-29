@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0">
             <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-teal-400 text-transparent bg-clip-text mb-2">
-              YieldUSD
+              Yieldra
             </div>
             <p className="text-gray-400">
               A hackathon project demonstrating yield generation on stablecoins
@@ -30,7 +30,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-500 text-sm">
-            © {new Date().getFullYear()} YieldUSD Hackathon Project. All rights
+            © {new Date().getFullYear()} Yieldra Hackathon Project. All rights
             reserved.
           </p>
           <div className="mt-4 flex justify-center space-x-6">

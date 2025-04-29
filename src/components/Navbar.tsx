@@ -41,7 +41,7 @@ const Navbar = () => {
           <Link href="/" className="text-2xl font-bold">
             <div className="flex items-center">
               <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-teal-400 text-transparent bg-clip-text mr-2">
-                YieldUSD
+                Yieldra
               </div>
               <div className="hidden md:flex space-x-1 items-center">
                 <span className="bg-teal-500 px-2 py-0.5 text-xs rounded-full font-semibold">

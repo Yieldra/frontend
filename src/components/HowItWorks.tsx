@@ -32,7 +32,7 @@ const HowItWorks = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 text-transparent bg-clip-text">
-            How YieldUSD Works
+            How Yieldra Works
           </h2>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto mt-4">Earn passive income in just four simple steps</p>
         </div>
