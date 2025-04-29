@@ -6,7 +6,7 @@ import Hero from "../components/Hero";
 import Features from "../components/Features";
 import HowItWorks from "../components/HowItWorks";
 import YieldCalculator from "../components/YieldCalculator";
-import Stats from "../components/Stats";
+// import Stats from "../components/Stats";
 import FAQ from "../components/FAQ";
 import CTASection from "../components/CTASection";
 // import Footer from "../components/Footer";
