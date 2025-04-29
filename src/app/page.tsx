@@ -9,6 +9,7 @@ import YieldCalculator from "../components/YieldCalculator";
 // import Stats from "../components/Stats";
 import FAQ from "../components/FAQ";
 import CTASection from "../components/CTASection";
+import { ChatWidget } from "@/components/ChatWidget";
 // import Footer from "../components/Footer";
 
 export default function Home() {
@@ -23,6 +24,7 @@ export default function Home() {
       <FAQ />
       <CTASection />
       {/* <Footer /> */}
+      <ChatWidget />
     </main>
   );
 }
