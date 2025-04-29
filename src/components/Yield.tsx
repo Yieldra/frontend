@@ -17,9 +17,21 @@ const Yield = () => {
   const [newApy, setNewApy] = useState(0);
   const [newYieldAmplifier, setNewYieldAmplifier] = useState(0);
   const [fundYield, setFundYield] = useState(0);
+  const [isOwner, setIsOwner] = useState(false);
 
   const { writeContractAsync } = useWriteContract();
   const [loadingButton, setLoadingButton] = useState<string | null>(null);
+
+  const { data: ownerAddress } = useReadContract({
+    ...wagmiContractTestUSDCConfig,
+    functionName: 'owner',
+  });
+
+  useEffect(() => {
+    if (typeof ownerAddress === 'string' && typeof address === 'string') {
+      setIsOwner(ownerAddress.toLowerCase() === address.toLowerCase());
+    }
+  }, [ownerAddress, address]);
 
   const { data: balanceUSDC } = useReadContract({
     ...wagmiContractTestUSDCConfig,
@@ -131,6 +143,7 @@ const Yield = () => {
   };
 
   const handleDeposit = () => {
+    console.log(BigInt(depositUSDC))
     if (!depositUSDC) return toast.warn('Set amount first!');
     executeContract('Deposit', {
       ...wagmiContractYieldUSDCConfig,
@@ -269,67 +282,69 @@ const Yield = () => {
       </div>
 
       {/* Admin Functions */}
-      <div className="mb-8 p-4 bg-white rounded-lg shadow border-t-4 border-red-500">
-        <h2 className="text-xl font-semibold mb-4">Admin Functions</h2>
+      {isOwner && (
+        <div className="mb-8 p-4 bg-white rounded-lg shadow border-t-4 border-red-500">
+          <h2 className="text-xl font-semibold mb-4">Admin Functions</h2>
 
-        {/* Set Yield Parameters */}
-        <div className="mb-6">
-          <h3 className="font-medium mb-2">Set Yield Parameters</h3>
-          <div className="flex w-full gap-2 flex-col md:flex-row">
-            <div>
-              <p>APY</p>
-              <input
-                type="number"
-                placeholder="New APY (%)"
-                value={newApy}
-                onChange={(e) => setNewApy(Number(e.target.value))}
-                className="p-2 border border-gray-300 rounded"
-                disabled={false}
-              />
+          {/* Set Yield Parameters */}
+          <div className="mb-6">
+            <h3 className="font-medium mb-2">Set Yield Parameters</h3>
+            <div className="flex w-full gap-2 flex-col md:flex-row">
+              <div>
+                <p>APY</p>
+                <input
+                  type="number"
+                  placeholder="New APY (%)"
+                  value={newApy}
+                  onChange={(e) => setNewApy(Number(e.target.value))}
+                  className="p-2 border border-gray-300 rounded"
+                  disabled={false}
+                />
+              </div>
+              <div>
+                <p>Yield Amplifier</p>
+                <input
+                  type="number"
+                  placeholder="New Amplifier"
+                  value={newYieldAmplifier}
+                  onChange={(e) => setNewYieldAmplifier(Number(e.target.value))}
+                  className="p-2 border border-gray-300 rounded"
+                  disabled={false}
+                />
+              </div>
             </div>
-            <div>
-              <p>Yield Amplifier</p>
-              <input
-                type="number"
-                placeholder="New Amplifier"
-                value={newYieldAmplifier}
-                onChange={(e) => setNewYieldAmplifier(Number(e.target.value))}
-                className="p-2 border border-gray-300 rounded"
-                disabled={false}
-              />
-            </div>
-          </div>
-          <button
-            onClick={handleSetParameters}
-            className="bg-red-500 text-white px-6 py-2 mt-4 rounded hover:bg-red-600 transition"
-            disabled={false}
-          >
-            Set Parameters
-          </button>
-        </div>
-
-        {/* Fund Yield Reserves */}
-        <div>
-          <h3 className="font-medium mb-2">Fund Yield Reserves</h3>
-          <div className="flex flex-col md:flex-row gap-3">
-            <input
-              type="number"
-              placeholder="Amount of USDC"
-              value={fundYield}
-              onChange={(e) => setFundYield(Number(e.target.value))}
-              className="flex-grow p-2 border border-gray-300 rounded"
-              disabled={false}
-            />
             <button
-              onClick={handleFundYieldReserves}
-              className="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 transition disabled:opacity-50"
-              disabled={loadingButton !== null}
+              onClick={handleSetParameters}
+              className="bg-red-500 text-white px-6 py-2 mt-4 rounded hover:bg-red-600 transition"
+              disabled={false}
             >
-              {loadingButton === 'Fund Reserves' ? 'Funding...' : 'Fund Reserves'}
+              Set Parameters
             </button>
           </div>
+
+          {/* Fund Yield Reserves */}
+          <div>
+            <h3 className="font-medium mb-2">Fund Yield Reserves</h3>
+            <div className="flex flex-col md:flex-row gap-3">
+              <input
+                type="number"
+                placeholder="Amount of USDC"
+                value={fundYield}
+                onChange={(e) => setFundYield(Number(e.target.value))}
+                className="flex-grow p-2 border border-gray-300 rounded"
+                disabled={false}
+              />
+              <button
+                onClick={handleFundYieldReserves}
+                className="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 transition disabled:opacity-50"
+                disabled={loadingButton !== null}
+              >
+                {loadingButton === 'Fund Reserves' ? 'Funding...' : 'Fund Reserves'}
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </main>
   );
 };
