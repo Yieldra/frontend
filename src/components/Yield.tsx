@@ -135,20 +135,29 @@ const Yield = () => {
 
   const handleApprove = () => {
     if (!depositUSDC) return toast.warn('Set amount first!');
+
+    // Convert depositUSDC to the correct unit with 6 decimals (USDC standard)
+    const amountWithDecimals = BigInt(Math.floor(depositUSDC * 1_000_000));
+
     executeContract('Approve', {
-      ...wagmiContractYieldUSDCConfig,
+      // Use TestUSDC contract config, not YieldUSDC
+      ...wagmiContractTestUSDCConfig,
       functionName: 'approve',
-      args: [address, BigInt(depositUSDC)],
+      // Approve YieldUSDC contract to spend tokens, not the user's address
+      args: [wagmiContractYieldUSDCConfig.address, amountWithDecimals],
     });
   };
 
   const handleDeposit = () => {
-    console.log(BigInt(depositUSDC))
     if (!depositUSDC) return toast.warn('Set amount first!');
+
+    // Convert depositUSDC to the correct unit with 6 decimals (USDC standard)
+    const amountWithDecimals = BigInt(Math.floor(depositUSDC * 1_000_000));
+
     executeContract('Deposit', {
       ...wagmiContractYieldUSDCConfig,
       functionName: 'deposit',
-      args: [BigInt(depositUSDC)],
+      args: [amountWithDecimals],
     });
   };
 
