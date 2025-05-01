@@ -40,7 +40,7 @@ const Footer = () => {
             <a href="#" className="text-gray-500 hover:text-gray-300 text-sm">
               Privacy
             </a>
-            <a href="#" className="text-gray-500 hover:text-gray-300 text-sm">
+            <a href="https://github.com/Yieldra" target="_blank" className="text-gray-500 hover:text-gray-300 text-sm">
               Documentation
             </a>
           </div>

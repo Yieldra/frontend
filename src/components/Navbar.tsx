@@ -34,7 +34,7 @@ const Navbar = () => {
                 <Link href="/dashboard">Dashboard</Link>
               </li>
               <li>
-                <Link href="">Documentation</Link>
+                <Link href="https://github.com/Yieldra" target="_blank">Documentation</Link>
               </li>
             </ul>
           </div>
@@ -63,7 +63,7 @@ const Navbar = () => {
               <Link href="/contract">Contract</Link>
             </li>
             <li>
-              <Link href="">Documentation</Link>
+              <Link href="https://github.com/Yieldra" target="_blank">Documentation</Link>
             </li>
           </ul>
         </div>

@@ -165,8 +165,7 @@ const ContractPage = () => {
               </div>
 
               <a
-                href="https://github.com/yourusername/yield-usd"
-                target="_blank"
+                href="/contract"
                 rel="noopener noreferrer"
                 className="text-blue-400 hover:text-blue-300 inline-flex items-center"
               >

@@ -36,8 +36,7 @@ const CTASection = () => {
                 <ArrowRight size={20} className="ml-2" />
               </Link>
               <a
-                href="https://github.com/yourusername/yield-usd"
-                target="_blank"
+                href="/contract"
                 rel="noopener noreferrer"
                 className="bg-gray-800 hover:bg-gray-700 text-white text-lg font-medium px-8 py-4 rounded-xl border border-gray-600"
               >

@@ -90,8 +90,7 @@ const ContractCard = () => {
 
             <div className="mt-6">
               <a
-                href="https://github.com/yourusername/yield-usd"
-                target="_blank"
+                href="/contract"
                 rel="noopener noreferrer"
                 className="text-blue-400 hover:text-blue-300 flex items-center"
               >
