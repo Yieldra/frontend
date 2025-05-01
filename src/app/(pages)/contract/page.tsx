@@ -1,9 +1,11 @@
 "use client";
 
+import "@/app/globals.css";
 import CodePreview from "@/components/CodePreview";
 import { Copy, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import React from "react";
+import { ChatWidget } from "@/components/ChatWidget";
 
 interface AnimatedSectionProps {
   children: React.ReactNode;
@@ -180,6 +182,7 @@ const ContractPage = () => {
       <AnimatedSection delay={0.4}>
         <CodePreview />
       </AnimatedSection>
+      <ChatWidget />
     </main>
   );
 };

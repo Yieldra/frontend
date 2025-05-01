@@ -2,6 +2,7 @@
 "use client";
 
 // import Header from "../components/Header";
+import "@/app/globals.css";
 import Hero from "../components/Hero";
 import Features from "../components/Features";
 import HowItWorks from "../components/HowItWorks";

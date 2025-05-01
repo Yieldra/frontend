@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "@/app/globals.css";
 import AppShell from "@/components/AppShell";
 import Provider from "./Provider";
 import { ToastContainer } from 'react-toastify';

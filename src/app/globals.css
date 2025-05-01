@@ -57,6 +57,7 @@
 	--chat--color-dark: #101330;
 	--chat--color-disabled: #777980;
 	--chat--color-typing: #404040;
+  --color-gray-900: oklch(21% 0.034 264.665);
 
 	--chat--spacing: 1rem;
 	--chat--border-radius: 0.25rem;
@@ -67,7 +68,7 @@
 
 	--chat--header-height: auto;
 	--chat--header--padding: var(--chat--spacing);
-	--chat--header--background: var(--chat--color-dark);
+	--chat--header--background: var(--color-gray-900);
 	--chat--header--color: var(--chat--color-light);
 	--chat--header--border-top: none;
 	--chat--header--border-bottom: none;
