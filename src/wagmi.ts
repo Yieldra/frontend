@@ -1,33 +1,30 @@
 import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultConfig } from "@rainbow-me/rainbowkit";
+import { getDefaultConfig, Chain } from "@rainbow-me/rainbowkit";
 import { sepolia, arbitrumSepolia } from "wagmi/chains";
 
-// const goChainTestnet = {
-//   id: 31337,
-//   name: "GoChain Testnet",
-//   iconUrl: "https://gochain.io/assets/img/favicon.ico",
-//   iconBackground: "#fff",
-//   nativeCurrency: { name: "GoChain", symbol: "GO", decimals: 18 },
-//   rpcUrls: {
-//     default: { http: ["https://127.0.0.1:8545"] },
-//   },
-//   blockExplorers: {
-//     default: {
-//       name: "GoChain Explorer",
-//       url: "https://testnet-explorer.gochain.io/",
-//     },
-//   },
-//   contracts: {
-//     multicall3: {
-//       address: "0xYourMulticall3ContractAddressHere",
-//       blockCreated: 1_234_567,
-//     },
-//   },
-// } as const satisfies Chain;
+// Define Pharos Devnet chain
+const pharosDevnet = {
+  id: 50002,
+  name: "Pharos Devnet",
+  // network: "pharos-devnet",
+  nativeCurrency: {
+    name: "Pharos Test Token",
+    symbol: "PTT",
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: { http: ["https://devnet.dplabs-internal.com"] },
+    public: { http: ["https://devnet.dplabs-internal.com"] },
+  },
+  blockExplorers: {
+    default: { name: "PharosScan", url: "https://pharosscan.xyz" },
+  },
+  // No multicall3 contract provided, optional
+} as const satisfies Chain;
 
 export const config = getDefaultConfig({
   appName: "Template Fullstack Web3",
   projectId: process.env.NEXT_PUBLIC_REOWN_PROJECT_ID || "",
-  chains: [sepolia, arbitrumSepolia],
+  chains: [sepolia, arbitrumSepolia, pharosDevnet],
   ssr: true,
 });
