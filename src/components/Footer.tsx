@@ -1,5 +1,7 @@
 // components/Footer.tsx
 import { Github, Twitter } from "lucide-react";
+import Image from "next/image";
+import YieldraLogo from "../../public/YieldraLogo.png"
 
 const Footer = () => {
   return (
@@ -8,9 +10,9 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0">
             <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-teal-400 text-transparent bg-clip-text mb-2">
-              Yieldra
+              <Image src={YieldraLogo} alt="yieldra-logo" width={150} height={150} />
             </div>
-            <p className="text-gray-400">
+            <p className="text-gray-400 ml-6">
               A hackathon project demonstrating yield generation on stablecoins
             </p>
           </div>

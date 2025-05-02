@@ -1,5 +1,7 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
+import Image from "next/image";
+import YieldraLogo from "../../public/YieldraLogo.png"
 
 const Navbar = () => {
   return (
@@ -41,7 +43,7 @@ const Navbar = () => {
           <Link href="/" className="text-2xl font-bold">
             <div className="flex items-center">
               <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-teal-400 text-transparent bg-clip-text mr-2">
-                Yieldra
+                <Image src={YieldraLogo} alt="yieldra-logo" width={150} height={150} />
               </div>
               <div className="hidden md:flex space-x-1 items-center">
                 <span className="bg-teal-500 px-2 py-0.5 text-xs rounded-full font-semibold">
