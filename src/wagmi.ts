@@ -13,8 +13,10 @@ const pharosDevnet = {
     decimals: 18,
   },
   rpcUrls: {
-    default: { http: ["https://devnet.dplabs-internal.com"] },
-    public: { http: ["https://devnet.dplabs-internal.com"] },
+    default: {
+      http: [`${process.env.NEXT_PUBLIC_URL}/api/pharos`],
+    },
+    public: { http: [`${process.env.NEXT_PUBLIC_URL}/api/pharos`] },
   },
   blockExplorers: {
     default: { name: "PharosScan", url: "https://pharosscan.xyz" },
