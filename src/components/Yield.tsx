@@ -300,11 +300,10 @@ const Yield = () => {
                       <button
                         key={t}
                         onClick={() => setTab(t as any)}
-                        className={`flex-1 py-2 text-sm font-medium rounded ${
-                          tab === t ? "bg-gray-900 text-white" : "text-gray-400"
-                        }`}
+                        className={`flex-1 py-2 text-sm font-medium rounded ${tab === t ? "bg-gray-900 text-white" : "text-gray-400"
+                          }`}
                       >
-                        {t.charAt(0).toUpperCase() + t.slice(1)}
+                        {t === "claim" ? "Claim Faucet" : t.charAt(0).toUpperCase() + t.slice(1)}
                       </button>
                     ))}
                   </div>
