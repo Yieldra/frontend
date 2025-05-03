@@ -104,7 +104,7 @@ const Yield = () => {
 
   useEffect(() => {
     if (typeof currentApy === 'bigint') {
-      setApy(Number(currentApy) / 100);
+      setApy(Number(currentApy));
     }
   }, [currentApy]);
 
