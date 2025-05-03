@@ -292,7 +292,7 @@ const Yield = () => {
                   <h2 className="flex items-center text-white text-lg font-semibold">
                     <ArrowDownUp className="mr-2 h-5 w-5 text-emerald-500" /> Operations
                   </h2>
-                  <p className="text-sm text-gray-400">Deposit, withdraw, and claim tokens</p>
+                  <p className="text-sm text-gray-400">Deposit USDC, withdraw, and claim faucet tokens</p>
                 </div>
                 <div className="p-4">
                   <div className="flex justify-between bg-gray-800 p-1 rounded mb-4">
@@ -303,7 +303,7 @@ const Yield = () => {
                         className={`flex-1 py-2 text-sm font-medium rounded ${tab === t ? "bg-gray-900 text-white" : "text-gray-400"
                           }`}
                       >
-                        {t === "claim" ? "Claim Faucet" : t.charAt(0).toUpperCase() + t.slice(1)}
+                        {t === "claim" ? "Claim Faucet" : t === "deposit" ? "Deposit USDC" : t.charAt(0).toUpperCase() + t.slice(1)}
                       </button>
                     ))}
                   </div>
@@ -348,7 +348,7 @@ const Yield = () => {
                               Depositing...
                             </span>
                           ) : (
-                            "Deposit"
+                            "Deposit USDC"
                           )}
                         </button>
                       </div>
